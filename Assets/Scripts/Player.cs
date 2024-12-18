@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public Text CoinText;
+    public int currentCoin = 0;
     public Health health;
 
     [Header("Movement")] 
@@ -53,6 +56,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
+        CoinText.text = currentCoin.ToString();
         horizontal = Input.GetAxisRaw("Horizontal");
         
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, radius, groundMask);
@@ -154,6 +159,17 @@ public class Player : MonoBehaviour
             health.TakeDamage(1);
         }
     }
+     void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag == "Coin")
+        {
+            currentCoin += 1;
+            other.gameObject.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Collected");
+            Destroy(other.gameObject, 1f);
+        }
+    }
+
+
 
     public void Die()
     {
