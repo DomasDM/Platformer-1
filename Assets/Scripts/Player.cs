@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     public AudioClip dashSound;
     public AudioSource walkSoundSource;
 
+    public AudioClip pickupSound; 
+   
     private AudioSource audioSource;
     private int remainingJumps;
     private float coyoteBuffer;
@@ -129,6 +131,17 @@ public class Player : MonoBehaviour
         else
         {
             walkSoundSource.Stop();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) 
+        {
+           
+            audioSource.PlayOneShot(pickupSound);
+
+          
+            Destroy(gameObject, pickupSound.length);
         }
     }
 
